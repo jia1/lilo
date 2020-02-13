@@ -1,0 +1,8 @@
+INSERT INTO employers(industry)
+VALUES ('Agriculture');
+
+INSERT INTO employers(industry)
+VALUES ('Education');
+
+INSERT INTO employers(industry)
+VALUES ('Finance');

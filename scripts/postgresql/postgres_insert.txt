@@ -1,0 +1,8 @@
+INSERT INTO jobs(location, status, employer_id)
+VALUES ('SG', 'ACTIVE', 1);
+
+INSERT INTO jobs(location, status, employer_id)
+VALUES ('MY', 'ACTIVE', 2);
+
+INSERT INTO jobs(location, status, employer_id)
+VALUES ('US', 'INACTIVE', 3);

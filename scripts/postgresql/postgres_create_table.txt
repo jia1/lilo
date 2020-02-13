@@ -1,0 +1,6 @@
+CREATE TABLE jobs(
+  job_id serial PRIMARY KEY,
+  location VARCHAR (32) NOT NULL,
+  status VARCHAR (32) NOT NULL,
+  employer_id INT NOT NULL
+);

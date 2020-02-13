@@ -1,0 +1,11 @@
+# debug: true
+
+mysql.URL: 'jdbc:mysql://localhost:3306/mysql'
+mysql.username: 'jiayee'
+mysql.password: '123456'
+mysql.query: 'SELECT * FROM employers;'
+
+postgres.URL: 'jdbc:postgresql://localhost:5432/postgres'
+postgres.username: 'jiayee'
+postgres.password: '123456'
+postgres.query: 'SELECT * FROM jobs;'
