@@ -10,7 +10,12 @@ import org.immutables.value.Value;
 @JsonSerialize(as = ImmutableJob.class)
 @JsonDeserialize(as = ImmutableJob.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public interface Job {
+public interface Job extends ElasticsearchModel {
+  @Override
+  default String getDocID() {
+    return String.valueOf(getJobID());
+  }
+
   @JsonProperty("job_id")
   int getJobID();
 

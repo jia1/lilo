@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +19,6 @@ public class PostgresConnector {
 
   private String query;
 
-  @Autowired
   public PostgresConnector(
       @Value("${postgres.URL}") final String URL,
       @Value("${postgres.username}") final String username,

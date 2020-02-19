@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +19,6 @@ public class MySQLConnector {
 
   private String query;
 
-  @Autowired
   public MySQLConnector(
       @Value("${mysql.URL}") final String URL,
       @Value("${mysql.username}") final String username,
@@ -37,6 +35,7 @@ public class MySQLConnector {
     return DriverManager.getConnection(URL, username, password);
   }
 
+  // FIXME: This does not work. Unable to debug.
   public Optional<ResultSet> getRecords() {
     try (final Connection connection = DriverManager.getConnection(URL, username, password)) {
       final Statement statement = connection.createStatement();
