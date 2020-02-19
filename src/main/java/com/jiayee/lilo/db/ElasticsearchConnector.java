@@ -51,7 +51,8 @@ public class ElasticsearchConnector {
       }
     });
     try {
-      final BulkResponse response = client.bulk(bulkRequest, RequestOptions.DEFAULT); // TODO: Async
+      // Can try async next time!
+      final BulkResponse response = client.bulk(bulkRequest, RequestOptions.DEFAULT);
       if (response.hasFailures()) {
         LOG.warn(String.format("HTTP status code: %s", response.status().getStatus()));
         LOG.error(response.buildFailureMessage());
