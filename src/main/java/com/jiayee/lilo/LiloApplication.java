@@ -29,8 +29,8 @@ public class LiloApplication {
 			final List<Employer> employers = employerRepository.getEmployers();
 			employers.forEach(employer -> System.out.println(employer.getIndustry()));
 			final ElasticsearchConnector es = context.getBean(ElasticsearchConnector.class);
-			System.out.println(es.bulkInsert(jobs));
-			System.out.println(es.bulkInsert(employers));
+			// System.out.println(es.bulkInsert(jobs));
+			// System.out.println(es.bulkInsert(employers));
 		};
 	}
 }

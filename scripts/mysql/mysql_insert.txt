@@ -6,3 +6,6 @@ VALUES ('Education');
 
 INSERT INTO employers(industry)
 VALUES ('Finance');
+
+INSERT INTO employers(industry)
+VALUES ('Manufacturing');

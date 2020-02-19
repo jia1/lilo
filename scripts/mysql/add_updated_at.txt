@@ -1,0 +1,6 @@
+# http://pointbeing.net/weblog/2008/03/mysql-versus-postgresql-adding-a-last-modified-column-to-a-table.html
+
+ALTER TABLE employers
+  ADD updated_at TIMESTAMP
+    DEFAULT CURRENT_TIMESTAMP
+    ON UPDATE CURRENT_TIMESTAMP;

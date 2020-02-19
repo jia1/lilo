@@ -40,4 +40,14 @@ public class PostgresConnector {
       return Optional.empty();
     }
   }
+
+  public Optional<ResultSet> getUpdatedRecords() {
+    try (final Connection connection = DriverManager.getConnection(URL, username, password)) {
+      final Statement statement = connection.createStatement();
+      return Optional.of(statement.executeQuery(query));
+    } catch (final SQLException e) {
+      e.printStackTrace();
+      return Optional.empty();
+    }
+  }
 }
