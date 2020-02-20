@@ -39,6 +39,10 @@ public class ElasticsearchConnector {
 
   // https://dzone.com/articles/fake-data-generation-and-bulk-insert-with-elastics
   public boolean bulkInsert(final List<? extends ElasticsearchModel> models) {
+    // Feeding an empty list into bulk request will cause an exception
+    if (models.isEmpty()) {
+      return false;
+    }
     final BulkRequest bulkRequest = new BulkRequest();
     models.forEach(model -> {
       final Class<? extends ElasticsearchModel> clazz = model.getClass();
@@ -56,6 +60,10 @@ public class ElasticsearchConnector {
   }
 
   public boolean bulkInsert(final ConsumerRecords<Long, KafkaMessage> consumerRecords) {
+    // Feeding an empty list into bulk request will cause an exception
+    if (consumerRecords.isEmpty()) {
+      return false;
+    }
     final BulkRequest bulkRequest = new BulkRequest();
     consumerRecords.forEach(consumerRecord -> bulkRequest.add(
         new IndexRequest().index(consumerRecord.value().getClazz().getSimpleName().toLowerCase())

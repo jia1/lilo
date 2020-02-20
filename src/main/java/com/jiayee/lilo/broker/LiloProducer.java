@@ -7,6 +7,7 @@ import com.jiayee.lilo.models.KafkaMessageSerializer;
 import com.jiayee.lilo.repositories.EmployerRepository;
 import com.jiayee.lilo.repositories.JobRepository;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
@@ -45,9 +46,11 @@ public class LiloProducer {
     this.employerRepository = employerRepository;
   }
 
-  public void runKafkaProducerOnce() throws SQLException {
-    final List<Job> updatedJobs = jobRepository.getUpdatedJobs();
+  public void runKafkaProducerOnce(final Timestamp timestamp) throws SQLException {
+    final List<Job> updatedJobs = jobRepository.getUpdatedJobs(timestamp);
+    LOG.info(String.format("Number of updated jobs: %d", updatedJobs.size()));
     final List<Employer> updatedEmployers = employerRepository.getUpdatedEmployers();
+    LOG.info(String.format("Number of updated employers: %d", updatedEmployers.size()));
     final List<KafkaMessage> messages = updatedJobs.stream()
         .map(Job::toKafkaMessage)
         .collect(Collectors.toList());

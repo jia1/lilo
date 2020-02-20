@@ -9,3 +9,9 @@ VALUES ('US', 'INACTIVE', 3);
 
 INSERT INTO jobs(location, status, employer_id)
 VALUES ('JP', 'DRAFT', 4);
+
+INSERT INTO jobs(location, status, employer_id)
+VALUES ('DE', 'ACTIVE', 5);
+
+INSERT INTO jobs(location, status, employer_id)
+VALUES ('IT', 'INACTIVE', 6);

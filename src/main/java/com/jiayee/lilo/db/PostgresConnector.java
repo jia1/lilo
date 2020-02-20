@@ -7,13 +7,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PostgresConnector {
+  private static final Logger LOG = LoggerFactory.getLogger(
+      PostgresConnector.class.getSimpleName());
+
   private final String URL;
 
   private final String username;
@@ -49,7 +53,7 @@ public class PostgresConnector {
   }
 
   // https://stackoverflow.com/questions/18614836/using-setdate-in-preparedstatement
-  public Optional<ResultSet> getUpdatedRecords() {
+  public Optional<ResultSet> getUpdatedRecords(final Timestamp timestamp) {
     // Query timestamp is fixed for convenience purposes. This value should be configurable in
     // production.
     try (final Connection connection = DriverManager.getConnection(URL, username, password)) {
@@ -57,8 +61,9 @@ public class PostgresConnector {
       preparedStatement.setTimestamp(
           1,
           // Timestamp.valueOf(LocalDate.of(2020, 2, 20).atStartOfDay())
-          Timestamp.valueOf(LocalDateTime.now())
+          timestamp
       );
+      LOG.info(preparedStatement.toString());
       return Optional.of(preparedStatement.executeQuery());
     } catch (final SQLException e) {
       e.printStackTrace();

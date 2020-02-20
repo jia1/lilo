@@ -31,10 +31,10 @@ public class LiloConsumer {
 
   public void runKafkaConsumerOnce() {
     final ConsumerRecords<Long, KafkaMessage> consumerRecords = kafkaConsumer
-        .poll(Duration.ofSeconds(150));
+        .poll(Duration.ofSeconds(1)); // Cannot be 0
     elasticsearchConnector.bulkInsert(consumerRecords);
     kafkaConsumer.commitAsync();
-    kafkaConsumer.close();
+    // kafkaConsumer.close();
   }
 
   private static Consumer<Long, KafkaMessage> createKafkaConsumer() {

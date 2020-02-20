@@ -7,6 +7,7 @@ import com.jiayee.lilo.models.Job;
 import com.jiayee.lilo.models.JobStatus;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,8 +29,8 @@ public class JobRepository {
     return resultSetToJobs(resultSetOptional.get());
   }
 
-  public List<Job> getUpdatedJobs() throws SQLException {
-    final Optional<ResultSet> resultSetOptional = postgresConnector.getUpdatedRecords();
+  public List<Job> getUpdatedJobs(final Timestamp now) throws SQLException {
+    final Optional<ResultSet> resultSetOptional = postgresConnector.getUpdatedRecords(now);
     if (!resultSetOptional.isPresent()) {
       return ImmutableList.of();
     }
