@@ -9,3 +9,7 @@ VALUES ('Finance');
 
 INSERT INTO employers(industry)
 VALUES ('Manufacturing');
+
+# Type this command during demo
+INSERT INTO employers(industry)
+VALUES ('Technology');
