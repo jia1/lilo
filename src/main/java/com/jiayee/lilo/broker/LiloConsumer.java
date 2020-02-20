@@ -31,7 +31,7 @@ public class LiloConsumer {
 
   public void runKafkaConsumerOnce() {
     final ConsumerRecords<Long, KafkaMessage> consumerRecords = kafkaConsumer
-        .poll(Duration.ofSeconds(30));
+        .poll(Duration.ofSeconds(150));
     elasticsearchConnector.bulkInsert(consumerRecords);
     kafkaConsumer.commitAsync();
     kafkaConsumer.close();

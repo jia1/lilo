@@ -1,12 +1,12 @@
 package com.jiayee.lilo;
 
-import com.jiayee.lilo.broker.LiloConsumer;
-import com.jiayee.lilo.broker.LiloProducer;
 import com.jiayee.lilo.db.ElasticsearchConnector;
 import com.jiayee.lilo.models.Employer;
 import com.jiayee.lilo.models.Job;
 import com.jiayee.lilo.repositories.EmployerRepository;
 import com.jiayee.lilo.repositories.JobRepository;
+import com.jiayee.lilo.threads.ConsumerThread;
+import com.jiayee.lilo.threads.ProducerThread;
 import java.util.List;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -31,12 +31,21 @@ public class LiloApplication {
 			final List<Employer> employers = employerRepository.getEmployers();
 			employers.forEach(employer -> System.out.println(employer.getIndustry()));
 			final ElasticsearchConnector es = context.getBean(ElasticsearchConnector.class);
+
+			// One-off indexing
 			// System.out.println(es.bulkInsert(jobs));
 			// System.out.println(es.bulkInsert(employers));
-			final LiloProducer producer = context.getBean(LiloProducer.class);
-			final LiloConsumer consumer = context.getBean(LiloConsumer.class);
-			producer.runKafkaProducerOnce();
-			consumer.runKafkaConsumerOnce();
+
+			// One-off streaming
+			// final LiloProducer producer = context.getBean(LiloProducer.class);
+			// final LiloConsumer consumer = context.getBean(LiloConsumer.class);
+			// producer.runKafkaProducerOnce();
+			// consumer.runKafkaConsumerOnce();
+
+			final Thread producerThread = context.getBean(ProducerThread.class);
+			final Thread consumerThread = context.getBean(ConsumerThread.class);
+			producerThread.start();
+			consumerThread.start();
 		};
 	}
 }
