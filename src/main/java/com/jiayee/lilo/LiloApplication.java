@@ -33,8 +33,8 @@ public class LiloApplication {
 			final ElasticsearchConnector es = context.getBean(ElasticsearchConnector.class);
 			// System.out.println(es.bulkInsert(jobs));
 			// System.out.println(es.bulkInsert(employers));
-			final LiloProducer producer = new LiloProducer();
-			final LiloConsumer consumer = new LiloConsumer();
+			final LiloProducer producer = context.getBean(LiloProducer.class);
+			final LiloConsumer consumer = context.getBean(LiloConsumer.class);
 			producer.runKafkaProducerOnce();
 			consumer.runKafkaConsumerOnce();
 		};

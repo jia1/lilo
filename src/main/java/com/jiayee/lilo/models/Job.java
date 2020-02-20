@@ -11,6 +11,13 @@ import org.immutables.value.Value;
 @JsonDeserialize(as = ImmutableJob.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public interface Job extends ElasticsearchModel, KafkaModel {
+  default KafkaMessage toKafkaMessage() {
+    return ImmutableKafkaMessage.builder()
+        .clazz(ImmutableJob.class)
+        .modelAsString(this.serialize())
+        .build();
+  }
+
   @JsonProperty("job_id")
   int getJobID();
 

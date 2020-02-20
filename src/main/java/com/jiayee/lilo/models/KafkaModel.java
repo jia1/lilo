@@ -6,7 +6,7 @@ import java.io.Serializable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-interface KafkaModel extends Serializable {
+public interface KafkaModel extends Serializable {
   Logger LOG = LoggerFactory.getLogger(KafkaModel.class.getSimpleName());
 
   ObjectMapper OBJECT_MAPPER = new ObjectMapper();
@@ -19,4 +19,6 @@ interface KafkaModel extends Serializable {
       return "";
     }
   }
+
+  KafkaMessage toKafkaMessage();
 }

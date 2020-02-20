@@ -11,24 +11,28 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class MySQLConnector {
-  private String URL;
+  private final String URL;
 
-  private String username;
+  private final String username;
 
-  private String password;
+  private final String password;
 
-  private String query;
+  private final String query;
+
+  private final String queryForUpdatedAt;
 
   public MySQLConnector(
       @Value("${mysql.URL}") final String URL,
       @Value("${mysql.username}") final String username,
       @Value("${mysql.password}") final String password,
-      @Value("${mysql.query}") final String query
+      @Value("${mysql.query}") final String query,
+      @Value("${mysql.query.updated_at}") final String queryForUpdatedAt
   ) {
     this.URL = URL;
     this.username = username;
     this.password = password;
     this.query = query;
+    this.queryForUpdatedAt = queryForUpdatedAt;
   }
 
   public Connection getConnection() throws SQLException {

@@ -1,11 +1,12 @@
 package com.jiayee.lilo.broker;
 
-import com.google.common.collect.ImmutableList;
-import com.jiayee.lilo.models.ImmutableJob;
-import com.jiayee.lilo.models.ImmutableKafkaMessage;
-import com.jiayee.lilo.models.JobStatus;
+import com.jiayee.lilo.models.Employer;
+import com.jiayee.lilo.models.Job;
 import com.jiayee.lilo.models.KafkaMessage;
 import com.jiayee.lilo.models.KafkaMessageSerializer;
+import com.jiayee.lilo.repositories.EmployerRepository;
+import com.jiayee.lilo.repositories.JobRepository;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
@@ -18,8 +19,10 @@ import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.serialization.LongSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 // https://dzone.com/articles/kafka-producer-and-consumer-example
+@Component
 public class LiloProducer {
   private static final Logger LOG = LoggerFactory.getLogger(LiloProducer.class.getSimpleName());
 
@@ -28,13 +31,24 @@ public class LiloProducer {
 
   private final Producer<Long, KafkaMessage> kafkaProducer;
 
-  public LiloProducer() {
+  private final JobRepository jobRepository;
+
+  private final EmployerRepository employerRepository;
+
+  public LiloProducer(
+      final JobRepository jobRepository,
+      final EmployerRepository employerRepository
+  ) {
+
     // kafkaAdminClient = createKafkaAdminClient();
     kafkaProducer = createKafkaProducer();
+    this.jobRepository = jobRepository;
+    this.employerRepository = employerRepository;
   }
 
-  public void runKafkaProducerOnce() {
+  public void runKafkaProducerOnce() throws SQLException {
     // TODO: Derive the messages for records by querying updated_at columns for all tables
+    /*
     final List<KafkaMessage> updates = ImmutableList.of(
         ImmutableKafkaMessage.builder()
             .clazz(ImmutableJob.class)
@@ -47,9 +61,18 @@ public class LiloProducer {
                 .serialize())
             .build()
     );
-    final List<ProducerRecord<Long, KafkaMessage>> records = updates.stream()
-        .peek(update -> LOG.info(update.serialize()))
-        .map(update -> new ProducerRecord<Long, KafkaMessage>(KafkaConstants.TOPIC_NAME, update))
+    */
+    final List<Job> updatedJobs = jobRepository.getUpdatedJobs();
+    final List<Employer> updatedEmployers = employerRepository.getUpdatedEmployers();
+    final List<KafkaMessage> messages = updatedJobs.stream()
+        .map(Job::toKafkaMessage)
+        .collect(Collectors.toList());
+    messages.addAll(updatedEmployers.stream()
+        .map(Employer::toKafkaMessage)
+        .collect(Collectors.toList()));
+    final List<ProducerRecord<Long, KafkaMessage>> records = messages.stream()
+        .peek(record -> LOG.info(record.serialize()))
+        .map(record -> new ProducerRecord<Long, KafkaMessage>(KafkaConstants.TOPIC_NAME, record))
         .collect(Collectors.toList());
     records.forEach(record -> {
       try {

@@ -12,8 +12,10 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.LongDeserializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 // https://dzone.com/articles/kafka-producer-and-consumer-example
+@Component
 public class LiloConsumer {
   private final static Logger LOG = LoggerFactory.getLogger(LiloConsumer.class.getSimpleName());
 

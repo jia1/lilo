@@ -2,33 +2,40 @@ package com.jiayee.lilo.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PostgresConnector {
-  private String URL;
+  private final String URL;
 
-  private String username;
+  private final String username;
 
-  private String password;
+  private final String password;
 
-  private String query;
+  private final String query;
+
+  private final String queryForUpdatedAt;
 
   public PostgresConnector(
       @Value("${postgres.URL}") final String URL,
       @Value("${postgres.username}") final String username,
       @Value("${postgres.password}") final String password,
-      @Value("${postgres.query}") final String query
+      @Value("${postgres.query}") final String query,
+      @Value("${postgres.query.updated_at}") final String queryForUpdatedAt
   ) {
     this.URL = URL;
     this.username = username;
     this.password = password;
     this.query = query;
+    this.queryForUpdatedAt = queryForUpdatedAt;
   }
 
   public Optional<ResultSet> getRecords() {
@@ -41,10 +48,17 @@ public class PostgresConnector {
     }
   }
 
+  // https://stackoverflow.com/questions/18614836/using-setdate-in-preparedstatement
   public Optional<ResultSet> getUpdatedRecords() {
+    // Query timestamp is fixed for convenience purposes. This value should be configurable in
+    // production.
     try (final Connection connection = DriverManager.getConnection(URL, username, password)) {
-      final Statement statement = connection.createStatement();
-      return Optional.of(statement.executeQuery(query));
+      final PreparedStatement preparedStatement = connection.prepareStatement(queryForUpdatedAt);
+      preparedStatement.setTimestamp(
+          1,
+          Timestamp.valueOf(LocalDate.of(2020, 2, 20).atStartOfDay())
+      );
+      return Optional.of(preparedStatement.executeQuery());
     } catch (final SQLException e) {
       e.printStackTrace();
       return Optional.empty();

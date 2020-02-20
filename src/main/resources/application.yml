@@ -4,12 +4,13 @@ mysql.URL: 'jdbc:mysql://localhost:3306/mysql'
 mysql.username: 'jiayee'
 mysql.password: '123456'
 mysql.query: 'SELECT * FROM employers;'
+mysql.query.updated_at: 'SELECT * FROM employers WHERE updated_at >= ?;'
 
 postgres.URL: 'jdbc:postgresql://localhost:5432/postgres'
 postgres.username: 'jiayee'
 postgres.password: '123456'
 postgres.query: 'SELECT * FROM jobs;'
-postgres.query.updated_at: 'SELECT * FROM jobs WHERE;'
+postgres.query.updated_at: 'SELECT * FROM jobs WHERE updated_at >= ?;'
 
 es.host: 'localhost'
 es.port: 9200

@@ -19,7 +19,7 @@ public interface KafkaConstants {
   public static Integer MAX_NO_MESSAGE_FOUND_COUNT = 100;
 
   // The max count of records that the consumer will fetch in one iteration.
-  public static Integer MAX_POLL_RECORDS_CONFIG = 1;
+  public static Integer MAX_POLL_RECORDS_CONFIG = 100;
 
   public static Integer MESSAGE_COUNT = 1000;
 
