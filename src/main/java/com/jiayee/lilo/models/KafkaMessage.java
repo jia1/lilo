@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import java.io.Serializable;
 import org.immutables.value.Value;
 import org.slf4j.Logger;
@@ -18,7 +19,7 @@ import org.slf4j.LoggerFactory;
 public interface KafkaMessage extends Serializable {
   Logger LOG = LoggerFactory.getLogger(Employer.class.getSimpleName());
 
-  ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+  ObjectMapper OBJECT_MAPPER = new ObjectMapper().registerModule(new Jdk8Module());
 
   Class<? extends KafkaModel> getClazz();
 

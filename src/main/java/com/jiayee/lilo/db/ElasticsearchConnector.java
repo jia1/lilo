@@ -2,6 +2,7 @@ package com.jiayee.lilo.db;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.jiayee.lilo.models.ElasticsearchModel;
 import com.jiayee.lilo.models.KafkaMessage;
 import java.io.IOException;
@@ -25,7 +26,8 @@ public class ElasticsearchConnector {
   private static final Logger LOG = LoggerFactory.getLogger(
       ElasticsearchConnector.class.getSimpleName());
 
-  private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+  private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
+      .registerModule(new Jdk8Module());
 
   private final RestHighLevelClient client;
 

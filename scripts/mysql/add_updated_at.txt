@@ -1,6 +1,13 @@
 # http://pointbeing.net/weblog/2008/03/mysql-versus-postgresql-adding-a-last-modified-column-to-a-table.html
 
+# FIXME: This commands still left updated_at unchanged upon update...
+
 ALTER TABLE employers
   ADD updated_at TIMESTAMP
+    DEFAULT CURRENT_TIMESTAMP
+    ON UPDATE CURRENT_TIMESTAMP;
+
+ALTER TABLE employers
+  MODIFY updated_at TIMESTAMP
     DEFAULT CURRENT_TIMESTAMP
     ON UPDATE CURRENT_TIMESTAMP;
