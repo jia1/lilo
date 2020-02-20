@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -56,7 +56,8 @@ public class PostgresConnector {
       final PreparedStatement preparedStatement = connection.prepareStatement(queryForUpdatedAt);
       preparedStatement.setTimestamp(
           1,
-          Timestamp.valueOf(LocalDate.of(2020, 2, 20).atStartOfDay())
+          // Timestamp.valueOf(LocalDate.of(2020, 2, 20).atStartOfDay())
+          Timestamp.valueOf(LocalDateTime.now())
       );
       return Optional.of(preparedStatement.executeQuery());
     } catch (final SQLException e) {

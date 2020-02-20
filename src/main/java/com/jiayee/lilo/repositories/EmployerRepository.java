@@ -73,7 +73,8 @@ public class EmployerRepository {
       final PreparedStatement preparedStatement = connection.prepareStatement(queryForUpdatedAt);
       preparedStatement.setTimestamp(
           1,
-          Timestamp.valueOf(LocalDateTime.of(2020, 2, 19, 15, 0))
+          // Timestamp.valueOf(LocalDateTime.of(2020, 2, 19, 15, 0))
+          Timestamp.valueOf(LocalDateTime.now())
       );
       final ResultSet resultSet = preparedStatement.executeQuery();
       while (resultSet.next()) {
