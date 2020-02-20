@@ -1,6 +1,7 @@
 package com.jiayee.lilo.broker;
 
 import com.google.common.collect.ImmutableList;
+import com.jiayee.lilo.db.ElasticsearchConnector;
 import com.jiayee.lilo.models.KafkaMessage;
 import com.jiayee.lilo.models.KafkaMessageDeserializer;
 import java.time.Duration;
@@ -21,20 +22,17 @@ public class LiloConsumer {
 
   private final Consumer<Long, KafkaMessage> kafkaConsumer;
 
-  public LiloConsumer() {
+  private final ElasticsearchConnector elasticsearchConnector;
+
+  public LiloConsumer(final ElasticsearchConnector elasticsearchConnector) {
     kafkaConsumer = createKafkaConsumer();
+    this.elasticsearchConnector = elasticsearchConnector;
   }
 
   public void runKafkaConsumerOnce() {
     final ConsumerRecords<Long, KafkaMessage> consumerRecords = kafkaConsumer
         .poll(Duration.ofSeconds(30));
-    consumerRecords.forEach(record -> {
-      LOG.info(record.value().getClazz().toString());
-      LOG.info(record.value().getModelAsString());
-      // TODO: Complete this
-      // Parse value
-      // Index to ES if applicable
-    });
+    elasticsearchConnector.bulkInsert(consumerRecords);
     kafkaConsumer.commitAsync();
     kafkaConsumer.close();
   }

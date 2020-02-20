@@ -39,7 +39,6 @@ public class LiloProducer {
       final JobRepository jobRepository,
       final EmployerRepository employerRepository
   ) {
-
     // kafkaAdminClient = createKafkaAdminClient();
     kafkaProducer = createKafkaProducer();
     this.jobRepository = jobRepository;
@@ -47,21 +46,6 @@ public class LiloProducer {
   }
 
   public void runKafkaProducerOnce() throws SQLException {
-    // TODO: Derive the messages for records by querying updated_at columns for all tables
-    /*
-    final List<KafkaMessage> updates = ImmutableList.of(
-        ImmutableKafkaMessage.builder()
-            .clazz(ImmutableJob.class)
-            .modelAsString(ImmutableJob.builder()
-                .jobID(5)
-                .location("DE")
-                .status(JobStatus.INACTIVE)
-                .employerID(3)
-                .build()
-                .serialize())
-            .build()
-    );
-    */
     final List<Job> updatedJobs = jobRepository.getUpdatedJobs();
     final List<Employer> updatedEmployers = employerRepository.getUpdatedEmployers();
     final List<KafkaMessage> messages = updatedJobs.stream()

@@ -3,9 +3,11 @@ package com.jiayee.lilo.db;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jiayee.lilo.models.ElasticsearchModel;
+import com.jiayee.lilo.models.KafkaMessage;
 import java.io.IOException;
 import java.util.List;
 import org.apache.http.HttpHost;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.index.IndexRequest;
@@ -53,17 +55,12 @@ public class ElasticsearchConnector {
     return sendBulkRequest(bulkRequest);
   }
 
-  public boolean bulkInsert(
-      final List<String> modelsAsString,
-      final Class<? extends ElasticsearchModel> clazz
-  ) {
+  public boolean bulkInsert(final ConsumerRecords<Long, KafkaMessage> consumerRecords) {
     final BulkRequest bulkRequest = new BulkRequest();
-    modelsAsString.forEach(modelAsString -> {
-      bulkRequest.add(
-          new IndexRequest().index(clazz.getSimpleName().toLowerCase())
-              .source(modelAsString, XContentType.JSON)
-      );
-    });
+    consumerRecords.forEach(consumerRecord -> bulkRequest.add(
+        new IndexRequest().index(consumerRecord.value().getClazz().getSimpleName().toLowerCase())
+            .source(consumerRecord.value().getModelAsString(), XContentType.JSON)
+    ));
     return sendBulkRequest(bulkRequest);
   }
 
