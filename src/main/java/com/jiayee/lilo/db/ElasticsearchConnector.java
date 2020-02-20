@@ -50,6 +50,7 @@ public class ElasticsearchConnector {
       try {
         // https://stackoverflow.com/questions/39187097/elastic-search-number-of-object-passed-must-be-even
         indexRequest = new IndexRequest().index(clazz.getSimpleName().toLowerCase())
+            .id(model.getElasticsearchID())
             .source(OBJECT_MAPPER.writeValueAsString(model), XContentType.JSON);
         bulkRequest.add(indexRequest);
       } catch (JsonProcessingException e) {
@@ -66,7 +67,9 @@ public class ElasticsearchConnector {
     }
     final BulkRequest bulkRequest = new BulkRequest();
     consumerRecords.forEach(consumerRecord -> bulkRequest.add(
-        new IndexRequest().index(consumerRecord.value().getClazz().getSimpleName().toLowerCase())
+        new IndexRequest()
+            .index(consumerRecord.value().getClazz().getSimpleName().toLowerCase())
+            .id(consumerRecord.value().getElasticsearchID())
             .source(consumerRecord.value().getModelAsString(), XContentType.JSON)
     ));
     return sendBulkRequest(bulkRequest);

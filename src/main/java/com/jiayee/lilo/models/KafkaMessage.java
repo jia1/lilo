@@ -22,6 +22,8 @@ public interface KafkaMessage extends Serializable {
 
   Class<? extends KafkaModel> getClazz();
 
+  String getElasticsearchID();
+
   String getModelAsString();
 
   @JsonIgnore

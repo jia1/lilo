@@ -12,9 +12,14 @@ import org.immutables.value.Value;
 @JsonDeserialize(as = ImmutableEmployer.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public interface Employer extends ElasticsearchModel, KafkaModel {
+  default String getElasticsearchID() {
+    return String.valueOf(getEmployerID());
+  }
+
   default KafkaMessage toKafkaMessage() {
     return ImmutableKafkaMessage.builder()
         .clazz(ImmutableEmployer.class)
+        .elasticsearchID(getElasticsearchID())
         .modelAsString(this.serialize())
         .build();
   }
@@ -22,5 +27,6 @@ public interface Employer extends ElasticsearchModel, KafkaModel {
   @JsonProperty("employer_id")
   int getEmployerID();
 
+  // FIXME: Field is present but value is empty in ES
   Optional<String> getIndustry();
 }
