@@ -8,4 +8,4 @@ INSERT INTO jobs(location, status, employer_id)
 VALUES ('US', 'INACTIVE', 3);
 
 INSERT INTO jobs(location, status, employer_id)
-VALUES ('JP', 'PAUSED', 4);
+VALUES ('JP', 'DRAFT', 4);

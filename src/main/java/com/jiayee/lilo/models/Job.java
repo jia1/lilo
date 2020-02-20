@@ -10,7 +10,7 @@ import org.immutables.value.Value;
 @JsonSerialize(as = ImmutableJob.class)
 @JsonDeserialize(as = ImmutableJob.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public interface Job extends ElasticsearchModel {
+public interface Job extends ElasticsearchModel, KafkaModel {
   @JsonProperty("job_id")
   int getJobID();
 

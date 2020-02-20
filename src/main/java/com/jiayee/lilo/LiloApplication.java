@@ -1,5 +1,7 @@
 package com.jiayee.lilo;
 
+import com.jiayee.lilo.broker.LiloConsumer;
+import com.jiayee.lilo.broker.LiloProducer;
 import com.jiayee.lilo.db.ElasticsearchConnector;
 import com.jiayee.lilo.models.Employer;
 import com.jiayee.lilo.models.Job;
@@ -31,6 +33,10 @@ public class LiloApplication {
 			final ElasticsearchConnector es = context.getBean(ElasticsearchConnector.class);
 			// System.out.println(es.bulkInsert(jobs));
 			// System.out.println(es.bulkInsert(employers));
+			final LiloProducer producer = new LiloProducer();
+			final LiloConsumer consumer = new LiloConsumer();
+			producer.runKafkaProducerOnce();
+			consumer.runKafkaConsumerOnce();
 		};
 	}
 }

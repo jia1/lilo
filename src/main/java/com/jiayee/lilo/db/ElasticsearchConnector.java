@@ -47,9 +47,27 @@ public class ElasticsearchConnector {
             .source(OBJECT_MAPPER.writeValueAsString(model), XContentType.JSON);
         bulkRequest.add(indexRequest);
       } catch (JsonProcessingException e) {
-        e.printStackTrace();
+        LOG.error(e.getMessage(), e);
       }
     });
+    return sendBulkRequest(bulkRequest);
+  }
+
+  public boolean bulkInsert(
+      final List<String> modelsAsString,
+      final Class<? extends ElasticsearchModel> clazz
+  ) {
+    final BulkRequest bulkRequest = new BulkRequest();
+    modelsAsString.forEach(modelAsString -> {
+      bulkRequest.add(
+          new IndexRequest().index(clazz.getSimpleName().toLowerCase())
+              .source(modelAsString, XContentType.JSON)
+      );
+    });
+    return sendBulkRequest(bulkRequest);
+  }
+
+  private boolean sendBulkRequest(final BulkRequest bulkRequest) {
     try {
       // Can try async next time!
       final BulkResponse response = client.bulk(bulkRequest, RequestOptions.DEFAULT);

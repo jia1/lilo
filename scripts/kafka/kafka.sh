@@ -11,4 +11,5 @@ kafka-topics --list --bootstrap-server localhost:9092
 kafka-console-producer --broker-list localhost:9092 --topic test
 kafka-console-consumer --bootstrap-server localhost:9092 --topic test --from-beginning
 
-kafka-configs --zookeeper localhost:2181 --alter --entity-name test --entity-type topics --add-config retention.ms=1000
+kafka-configs --zookeeper localhost:2181 --alter --entity-name test --entity-type topics --add-config retention.ms=30000
+kafka-topics --zookeeper localhost:2181 --describe --topics-with-overrides
