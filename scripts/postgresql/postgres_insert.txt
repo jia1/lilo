@@ -15,3 +15,7 @@ VALUES ('DE', 'ACTIVE', 5);
 
 INSERT INTO jobs(location, status, employer_id)
 VALUES ('IT', 'INACTIVE', 6);
+
+# Demo this
+INSERT INTO jobs(location, status, employer_id)
+VALUES ('FR', 'INACTIVE', 7);

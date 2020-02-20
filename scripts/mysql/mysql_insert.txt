@@ -10,6 +10,6 @@ VALUES ('Finance');
 INSERT INTO employers(industry)
 VALUES ('Manufacturing');
 
-# Type this command during demo
+# This record is not in DB yet
 INSERT INTO employers(industry)
 VALUES ('Technology');
